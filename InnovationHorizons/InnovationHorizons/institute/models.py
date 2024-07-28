@@ -16,8 +16,8 @@ class Student(models.Model):
     level = models.CharField(max_length=100)
     classes = models.ManyToManyField(Lesson, related_name='students')
 
-    def str(self):
-        return self.user.username
+    def __str__(self):
+        return self.name
 
 
 class Teacher(models.Model):
@@ -27,8 +27,8 @@ class Teacher(models.Model):
     student = models.OneToOneField(Student, on_delete=models.CASCADE)
     classes = models.CharField(max_length=200)
 
-    def str(self):
-        return self.user.username
+    def __str__(self):
+        return self.name
 
 
 class Admin(models.Model):
@@ -42,18 +42,14 @@ class Admin(models.Model):
 class Attendance(models.Model):
     PRESENT = 'P'
     ABSENT = 'A'
-    STATUS_CHOICES = [
-        (PRESENT, 'Present'),
-        (ABSENT, 'Absent'),
-    ]
-
-    student = models.ForeignKey('Student', on_delete=models.CASCADE, related_name='attendances')
-    lesson_id = models.ForeignKey('Lesson', on_delete=models.CASCADE, related_name='attendances')
+    STATUS_CHOICES = [(PRESENT,'Present'),(ABSENT,'Absent'),]
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='attendances')
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name='attendances')
     date = models.DateField()
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default=ABSENT)
 
     def __str__(self):
-        return f"{self.student.user.username} - {self.class_id.name} on {self.date}: {self.get_status_display()}"
+        return f"{self.student.name} - {self.lesson.title} on {self.date}: {self.get_status_display()}"
 
 
 class Assignment(models.Model):
@@ -65,7 +61,7 @@ class Assignment(models.Model):
     lesson_id = models.ForeignKey(Lesson, on_delete=models.CASCADE)
     student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
 
-    def str(self):
+    def __str__(self):
         return self.title
 
 
@@ -74,5 +70,5 @@ class Grade(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='grades')
     grade = models.DecimalField(max_digits=5, decimal_places=2)
 
-    def str(self):
+    def __str__(self):
         return f'{self.student.user.username} - {self.grade}'
