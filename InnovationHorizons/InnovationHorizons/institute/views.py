@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.views import View
 from .models import Lesson, Student, Teacher, Attendance, Assignment, Grade
 from .serializers import LessonSerializer ,AssignmentSerializer , GradeSerializer
-rest_framework import viewsets
+from rest_framework import viewsets
 
 
 class LessonViewSet(viewsets.ModelViewSet):
