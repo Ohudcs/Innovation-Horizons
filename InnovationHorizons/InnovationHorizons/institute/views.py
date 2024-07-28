@@ -2,8 +2,8 @@ from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from django.views import View
 from .models import Lesson, Student, Teacher, Attendance, Assignment, Grade
-from .serializers import LessonSerializer, AssignmentSerializer
-from rest_framework import viewsets
+from .serializers import LessonSerializer ,AssignmentSerializer , GradeSerializer
+rest_framework import viewsets
 
 
 class LessonViewSet(viewsets.ModelViewSet):
@@ -67,3 +67,12 @@ class AttendanceDetailView(View):
             }
             return JsonResponse(data)
 
+
+class AssignmentViewSet(viewsets.ModelViewSet):
+   serializer_class = AssignmentSerializer
+   queryset = Assignment.objects.all()
+
+
+class GradeViewSet(viewsets.ModelViewSet):
+    serializer_class = GradeSerializer
+    queryset = Grade.objects.all()
